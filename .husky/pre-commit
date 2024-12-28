@@ -1,0 +1,4 @@
+# . "$(dirname "$0")/conventional-branch-check.sh"
+# . "$(dirname "$0")/node-check.sh"
+
+npm run lint --workspace frontend

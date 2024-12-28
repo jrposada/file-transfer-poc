@@ -1,0 +1,20 @@
+{
+  "name": "@jrposada/file-transfer-poc-backend",
+  "version": "0.1.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrposada/file-transfer-poc.git"
+  },
+  "scripts": {
+  },
+  "author": {
+    "email": "jrposada.dev@gmail.com",
+    "name": "Javier Rodriguez Posada"
+  },
+  "type": "module",
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
