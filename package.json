@@ -9,8 +9,19 @@
     "shared"
   ],
   "scripts": {
+    "build:backend": "npm run build --workspace backend",
+    "deploy:backend": "npm run deploy --workspace backend",
     "dev:frontend": "npm run dev --workspace frontend",
-    "dev": "run-p dev:*"
+    "dev": "run-p dev:*",
+    "lint:eslint:backend": "npm run lint:eslint --workspace backend",
+    "lint:eslint:frontend": "npm run lint:eslint --workspace frontend",
+    "lint:eslint": "run-p lint:eslint:*",
+    "lint:format:backend": "npm run lint:format --workspace backend",
+    "lint:format:frontend": "npm run lint:format --workspace frontend",
+    "lint:format": "run-p lint:format:*",
+    "lint:types:backend": "npm run lint:types --workspace backend",
+    "lint:types:frontend": "npm run lint:types --workspace frontend",
+    "lint:types": "run-p lint:types:*"
   },
   "author": {
     "email": "jrposada.dev@gmail.com",
@@ -27,6 +38,8 @@
     "url": "git+https://github.com/jrposada/file-transfer-poc.git"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
     "dotenv": "^16.0.3",
     "eslint": "^8.56.0",
     "husky": "^9.1.7",

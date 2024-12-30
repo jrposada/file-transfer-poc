@@ -1,0 +1,71 @@
+service: file-transfer-poc
+frameworkVersion: '3'
+
+plugins:
+  - serverless-esbuild
+
+package:
+  individually: true
+
+provider:
+  name: aws
+  stage: ${opt:stage, 'test'}
+  region: ${opt:region, 'eu-west-3'}
+  runtime: nodejs20.x
+
+resources:
+  Resources:
+    # Roles
+    FileUploadNotifierRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Action:
+                - sts:AssumeRole
+              Effect: Allow
+              Principal:
+                AWS:
+                  Fn::Sub: arn:aws:iam::${AWS::AccountId}:root
+                Service:
+                  - lambda.amazonaws.com
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+    # Storage
+    FileStorageBucketInvokePermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        FunctionName:
+          Fn::GetAtt:
+            - FileUploadNotifierLambdaFunction
+            - Arn
+        Principal: s3.amazonaws.com
+        Action: lambda:InvokeFunction
+        SourceAccount:
+          Ref: AWS::AccountId
+        SourceArn:
+          Fn::Sub: arn:aws:s3:::${self:service}-${sls:stage}-files
+    FileStorageBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:service}-${sls:stage}-files
+        NotificationConfiguration:
+          LambdaConfigurations:
+            - Event: 's3:ObjectCreated:*'
+              Function:
+                Fn::GetAtt:
+                  - FileUploadNotifierLambdaFunction
+                  - Arn
+      DependsOn:
+        - FileUploadNotifierLambdaFunction
+
+functions:
+  FileUploadNotifier:
+    handler: src/functions/file-upload-notifier/file-upload-notifier.handler
+    description: Listen to new objects in S3 file storage bucket.
+    role: FileUploadNotifierRole
+    # environment:
+    #   SQS_QUEUE_URL: { Ref: ProcessingQueue }
+    #   S3_BUCKET: { Ref: FileStorageBucket }

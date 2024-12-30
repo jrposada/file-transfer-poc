@@ -13,7 +13,7 @@
     "format": "prettier . --write",
     "lint:eslint": "eslint .",
     "lint:format": "prettier . --check",
-    "lint:tsc": "tsc --noEmit",
+    "lint:types": "tsc --noEmit",
     "lint": "run-p lint:*"
   },
   "author": {

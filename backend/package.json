@@ -7,14 +7,22 @@
     "url": "git+https://github.com/jrposada/file-transfer-poc.git"
   },
   "scripts": {
+    "deploy": "serverless deploy --package .serverless --stage test --verbose",
+    "build": "serverless package",
+    "format": "prettier . --write",
+    "lint:eslint": "eslint .",
+    "lint:format": "prettier . --check",
+    "lint:types": "tsc --noEmit",
+    "lint": "run-p lint:*"
   },
   "author": {
     "email": "jrposada.dev@gmail.com",
     "name": "Javier Rodriguez Posada"
   },
   "type": "module",
-  "dependencies": {
-  },
   "devDependencies": {
+    "esbuild": "^0.24.2",
+    "serverless": "^3.40.0",
+    "serverless-esbuild": "^1.54.6"
   }
 }
