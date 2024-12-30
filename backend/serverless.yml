@@ -53,7 +53,7 @@ resources:
         BucketName: ${self:service}-${sls:stage}-files
         NotificationConfiguration:
           LambdaConfigurations:
-            - Event: "s3:ObjectCreated:*"
+            - Event: 's3:ObjectCreated:*'
               Function:
                 Fn::GetAtt:
                   - FileUploadNotifierLambdaFunction

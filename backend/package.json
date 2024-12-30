@@ -8,7 +8,12 @@
   },
   "scripts": {
     "deploy": "serverless deploy --package .serverless --stage test --verbose",
-    "build": "serverless package"
+    "build": "serverless package",
+    "format": "prettier . --write",
+    "lint:eslint": "eslint .",
+    "lint:format": "prettier . --check",
+    "lint:types": "tsc --noEmit",
+    "lint": "run-p lint:*"
   },
   "author": {
     "email": "jrposada.dev@gmail.com",
