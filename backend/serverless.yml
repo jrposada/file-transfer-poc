@@ -13,9 +13,13 @@ provider:
   region: ${opt:region, 'eu-west-3'}
   runtime: nodejs20.x
 
+custom:
+  appConfig:
+    fileBucketName: ${self:service}-${sls:stage}-files
+
 resources:
   Resources:
-    # Roles
+    # Lambda Roles
     FileUploadNotifierRole:
       Type: AWS::IAM::Role
       Properties:
@@ -46,11 +50,11 @@ resources:
         SourceAccount:
           Ref: AWS::AccountId
         SourceArn:
-          Fn::Sub: arn:aws:s3:::${self:service}-${sls:stage}-files
+          Fn::Sub: arn:aws:s3:::${self:custom.appConfig.fileBucketName}
     FileStorageBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:service}-${sls:stage}-files
+        BucketName: ${self:custom.appConfig.fileBucketName}
         NotificationConfiguration:
           LambdaConfigurations:
             - Event: 's3:ObjectCreated:*'
@@ -62,6 +66,22 @@ resources:
         - FileUploadNotifierLambdaFunction
 
 functions:
+  # API
+  FilesUpload:
+    handler: src/api/files/files-upload.handler
+    description: Returns file's S3 pre-signed upload url.
+    role: FilesPostRole
+    events:
+      - http:
+          path: api/files/upload/
+          method: get
+          cors: true
+          integration: lambda-proxy
+          authorizer: aws_iam
+    envronment:
+      FILE_BUCKET: ${self:custom.appConfig.fileBucketName}
+
+  # Functions
   FileUploadNotifier:
     handler: src/functions/file-upload-notifier/file-upload-notifier.handler
     description: Listen to new objects in S3 file storage bucket.

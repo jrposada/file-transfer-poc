@@ -20,7 +20,12 @@
     "name": "Javier Rodriguez Posada"
   },
   "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.717.0",
+    "@aws-sdk/s3-request-presigner": "^3.717.0"
+  },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.146",
     "esbuild": "^0.24.2",
     "serverless": "^3.40.0",
     "serverless-esbuild": "^1.54.6"
