@@ -61,16 +61,7 @@ export function useLocalStorage<T>(
 
     const parsedValue = parseValue<T>(localStorageValue, typeof defaultValue);
 
-    console.log(
-        'localStorageValue',
-        localStorageValue,
-        typeof localStorageValue,
-        parsedValue,
-        typeof parsedValue,
-    );
-
     const [value, setValue] = useState(parsedValue);
-    console.log(value, localStorageValue);
 
     const setLocalStorageValue = useCallback(
         (nextValue: T) => {

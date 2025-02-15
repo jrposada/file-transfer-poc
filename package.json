@@ -10,7 +10,10 @@
   ],
   "scripts": {
     "build:backend": "npm run build --workspace backend",
+    "build": "run-p build:*",
+    "deploy-full": "npm run build && npm run deploy",
     "deploy:backend": "npm run deploy --workspace backend",
+    "deploy": "run-p deploy:*",
     "dev:frontend": "npm run dev --workspace frontend",
     "dev": "run-p dev:*",
     "lint:eslint:backend": "npm run lint:eslint --workspace backend",

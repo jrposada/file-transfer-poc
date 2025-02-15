@@ -12,6 +12,8 @@ provider:
   stage: ${opt:stage, 'test'}
   region: ${opt:region, 'eu-west-3'}
   runtime: nodejs20.x
+  environment:
+    REGION: ${AWS::Region}
 
 custom:
   appConfig:
@@ -20,6 +22,34 @@ custom:
 resources:
   Resources:
     # Lambda Roles
+    FilesUploadRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Action:
+                - sts:AssumeRole
+              Effect: Allow
+              Principal:
+                AWS:
+                  Fn::Sub: arn:aws:iam::${AWS::AccountId}:root
+                Service:
+                  - lambda.amazonaws.com
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        Policies:
+          - PolicyName: S3Access
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Action:
+                    - s3:GetObject
+                    - s3:PutObject
+                  Effect: Allow
+                  Resource:
+                    - arn:aws:s3:::${self:custom.appConfig.fileBucketName}
+
     FileUploadNotifierRole:
       Type: AWS::IAM::Role
       Properties:
@@ -70,7 +100,7 @@ functions:
   FilesUpload:
     handler: src/api/files/files-upload.handler
     description: Returns file's S3 pre-signed upload url.
-    role: FilesPostRole
+    role: FilesUploadRole
     events:
       - http:
           path: api/files/upload/
@@ -78,7 +108,7 @@ functions:
           cors: true
           integration: lambda-proxy
           authorizer: aws_iam
-    envronment:
+    environment:
       FILE_BUCKET: ${self:custom.appConfig.fileBucketName}
 
   # Functions

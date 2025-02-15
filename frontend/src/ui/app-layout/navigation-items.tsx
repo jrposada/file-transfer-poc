@@ -15,13 +15,5 @@ export const navigationItems = (
                 <ListItemText primary={t('navigation.home')} />
             </ListItemButton>
         </Link>
-        <Link to="/movements">
-            <ListItemButton>
-                <ListItemIcon>
-                    <HomeIcon />
-                </ListItemIcon>
-                <ListItemText primary={t('navigation.movements')} />
-            </ListItemButton>
-        </Link>
     </>
 );

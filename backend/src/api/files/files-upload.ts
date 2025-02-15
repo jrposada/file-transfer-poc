@@ -1,6 +1,7 @@
 import { getEnvironmentVariable } from '@shared/utils/get-environment-variable';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { getS3UploadUrl } from '../../services/aws/s3';
+import { ApiResponse } from '@shared/models/api-response';
 
 /**
  * Return file's S3 pre-signed upload url
@@ -14,12 +15,20 @@ export async function handler(
 
     const url = await getS3UploadUrl(bucket, filename);
 
+    const body: ApiResponse<string> = {
+        data: url,
+        success: true,
+    }
+
     return {
-        body: url,
+        body: JSON.stringify(body),
         headers: {
-            'content-type': 'text/plain',
-            'Access-Control-Allow-Origin': '',
+            'content-type': 'application/json',
+
             'Access-Control-Allow-Credentials': true,
+            'Access-Control-Allow-Origin': 'http://localhost:3000',
+            "Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key",
+            "Access-Control-Allow-Methods": "OPTIONS,GET",
         },
         statusCode: 200,
     };

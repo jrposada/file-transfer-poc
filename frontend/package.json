@@ -22,6 +22,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@aws-crypto/sha256-browser": "^5.2.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
@@ -31,26 +32,29 @@
     "@mui/icons-material": "^5.15.6",
     "@mui/material": "^5.15.6",
     "@mui/x-charts": "^7.5.1",
-    "@tanstack/react-query": "^5.17.19",
+    "@smithy/protocol-http": "^4.1.8",
+    "@smithy/signature-v4": "^4.2.4",
     "@tanstack/react-query-devtools": "^5.17.21",
+    "@tanstack/react-query": "^5.17.19",
     "@tanstack/react-router": "^1.12.12",
     "@tanstack/router-devtools": "^1.12.13",
     "ag-grid-react": "^31.0.3",
     "dotenv": "^16.0.3",
-    "i18next": "^23.8.2",
     "i18next-browser-languagedetector": "^7.2.0",
+    "i18next": "^23.8.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^14.0.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@smithy/types": "^3.7.2",
     "@types/node": "^20.0.0",
-    "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
+    "@types/react": "^18.2.48",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "eslint-config-react-app": "^7.0.1",
-    "vite": "^5.0.12",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "vite": "^5.0.12"
   }
 }
