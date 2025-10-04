@@ -15,7 +15,7 @@ provider:
 
 resources:
   Resources:
-    # Roles
+    # Lambda Roles
     FileUploadNotifierRole:
       Type: AWS::IAM::Role
       Properties:
@@ -60,6 +60,18 @@ resources:
                   - Arn
       DependsOn:
         - FileUploadNotifierLambdaFunction
+
+    # User Management
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${self:service}-${sls:stage}-user-pool
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        UserPoolId:
+          Ref: CognitoUserPool
+        ClientName: 
 
 functions:
   FileUploadNotifier:
